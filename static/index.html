@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="/style/style.css">
+    <title>GraphQL</title>
+</head>
+<body>
+    <div id="login-content">
+        <span>Sign in:</span>
+        <textarea id="name-email-input" placeholder="Username/Email"></textarea>
+        <textarea id="password-input" placeholder="Password"></textarea>
+        <button id="login-button">Login</button>
+    </div>
+    <div id="profile-content">
+        
+    </div>
+    <script type="module" src="./scripts/login.js" defer></script>
+    <script type="module" src="./scripts/profile.js" defer></script>
+</body>
+</html>
+
+<style>
+    textarea {
+        resize: none;
+    }
+    #login-content {
+        flex-direction: column;
+    }
+</style>

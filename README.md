@@ -1,2 +1,2 @@
 # GraphQL
-Yääää
+Yääää (Hugely)
