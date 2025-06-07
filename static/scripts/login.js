@@ -1,20 +1,34 @@
-const usernameEmailField = document.getElementById("name-email-input")
-usernameEmailField.style.backgroundColor = "lightblue"
+import { SignInUsingCredentials } from "./fetch.js"
 
-const passwordField = document.getElementById("password-input")
-passwordField.style.backgroundColor = "lightblue"
+let loggedIn = false
 
-const loginButton = document.getElementById("login-button")
+export function StartLoginPage() {
+    const usernameEmailField = document.getElementById("name-email-input")
+    usernameEmailField.style.backgroundColor = "lightblue"
 
-loginButton.addEventListener("click", () => {
-    console.log("Logging in...")
-    let values
-    values = getAndResetInput()
-    console.log(values[0])
-    console.log(values[1])
-})
+    const passwordField = document.getElementById("password-input")
+    passwordField.style.backgroundColor = "lightblue"
 
-function getAndResetInput() {
+    const loginButton = document.getElementById("login-button")
+
+    loginButton.addEventListener("click", () => {
+        console.log("Logging in...")
+        let values
+        values = getAndResetInput(usernameEmailField, passwordField)
+        console.log(values[0]) // Username/Email
+        console.log(values[1]) // Password
+        let success = SignInUsingCredentials(values[0], values[1])
+        if (success) {
+            loggedIn = true
+            console.log("Login successful")
+        } else {
+            loggedIn = false
+            console.log("Login failed")
+        }
+    })
+}
+
+function getAndResetInput(usernameEmailField, passwordField) {
     const usernameOrEmail = usernameEmailField.value
     const password = passwordField.value
 
@@ -24,4 +38,12 @@ function getAndResetInput() {
     console.log(`Got username/email: ${usernameOrEmail} and password: ${password}`)
 
     return [usernameOrEmail, password]
+}
+
+export function LoginState(getOrSet, newState) {
+    if (getOrSet === "get") {
+        return loggedIn
+    } else if (getOrSet === "set") {
+        loggedIn = newState
+    }
 }

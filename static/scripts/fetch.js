@@ -3,7 +3,13 @@
 export function SignInUsingCredentials(nameOrEmail, password) {
     const credentials = btoa(`${nameOrEmail}:${password}`); //encode string in base-64
 
-    fetchToken(credentials)
+    let successAndError = []
+    successAndError = fetchToken(credentials)
+    if (successAndError[0]) {
+        const jwtToken = successAndError[1]
+        localStorage.setItem("jwt", jwtToken)  // Store JWT for future requests
+    }
+    return successAndError[1]
 }
 
 
@@ -68,4 +74,16 @@ export async function checkToken(token) {
     } catch (error) {
         return [false, "Login not allowed from this location"];
     }
+}
+
+export function GetUserDetails() {
+
+}
+
+export function GetUserProgress() {
+
+}
+
+export function GetUserSkills() {
+
 }
