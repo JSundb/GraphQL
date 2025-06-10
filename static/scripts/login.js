@@ -5,11 +5,7 @@ let loggedIn = false
 
 export function StartLoginPage() {
     const usernameEmailField = document.getElementById("name-email-input")
-    usernameEmailField.style.backgroundColor = "lightblue"
-
     const passwordField = document.getElementById("password-input")
-    passwordField.style.backgroundColor = "lightblue"
-
     const loginButton = document.getElementById("login-button")
 
     loginButton.addEventListener("click", async () => {
