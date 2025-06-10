@@ -36,7 +36,9 @@ data: transaction_aggregate(where: {type: {_eq: "xp"}, event: {id: {_eq: 104}}})
 
 export const ProgressQuery = `{
   user {
-    projects: progresses(where: {object: {type: {_eq: "project"}}}) {
+    projects: progresses(
+      order_by: { updatedAt: desc }
+    	where: {object: {type: {_eq: "project"}}}) {
       object {
         projectName: name
       }
@@ -53,5 +55,18 @@ export const ProgressQuery = `{
 }`
 
 export const SkillsQuery = `{
-
+  user {
+    skills: transactions(
+      order_by: [{type: asc}, {amount: desc}]
+      distinct_on: [type]
+      where: {
+      _or: [
+      {type: {_like: "skill%"}}
+      {type: {_eq: "level"}}
+      ]}
+    ) {
+      type
+      amount
+    }
+  }
 }`

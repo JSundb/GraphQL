@@ -36,6 +36,7 @@ export async function ConstructUserProgress() {
     const progressData = await FetchWithQuery(ProgressQuery)
 
     progressData.user[0].projects.forEach(project => {
+        if (project.grade === null) return;
         pageArea.innerHTML += `
     <br><br>
     <div id="project-name">Project Name: ${project.object.projectName}</div>
@@ -54,4 +55,22 @@ export async function ConstructUserProgress() {
 export async function ConstructUserSkills() {
     const pageArea = document.getElementById("graph-skills")
     const skillsData = await FetchWithQuery(SkillsQuery)
+
+    skillsData.user[0].skills.forEach(skill => {
+        let skillName = skill.type
+        skillName = skillName.replace(/_/g, " ") // Replace "_" with " "
+        skillName = skillName.charAt(0).toUpperCase() + skillName.slice(1) // Add capitalization
+        if (skillName === "Level") {
+            pageArea.innerHTML += `
+    <br><br>
+    <div id="level">Your Current Level: ${skill.amount}</div>
+    `
+        } else {
+            pageArea.innerHTML += `
+    <br><br>
+    <div id="skill-name">${skillName}: </div>
+    <div id="skill-value">${skill.amount}/100</div>
+    `
+        }
+    });
 }

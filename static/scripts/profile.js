@@ -6,4 +6,5 @@ export function StartProfilePage() {
     contentArea.innerHTML = PROFILEPAGE
     ConstructUserDetails()
     ConstructUserProgress()
+    ConstructUserSkills()
 }
