@@ -1,4 +1,5 @@
 import { SignInUsingCredentials } from "./fetch.js"
+import { StartProfilePage } from "./profile.js"
 
 let loggedIn = false
 
@@ -38,6 +39,7 @@ async function sendCredentials(usernameEmailField, passwordField) {
     if (success) {
         loggedIn = true
         console.log("Login successful")
+        StartProfilePage()
     } else {
         loggedIn = false
         console.log("Login failed")

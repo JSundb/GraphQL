@@ -10,3 +10,22 @@ export const PROFILEPAGE = `    <div id="profile-page-content">
         <div id="graph-progress">Progress:</div>
         <div id="graph-skills">Skills:</div>
     </div>`
+
+export const ProfileQuery = `{
+  user {
+    id
+    login: username
+    email
+    firstName
+    lastName
+    auditRatio
+  }
+  transaction_aggregate(where: {type: {_eq: "xp"}, event: {id: {_eq: 104}}}) {
+    aggregate {
+      count
+      sum {
+        amount
+      }
+    }
+  }
+}`

@@ -14,30 +14,6 @@ export async function SignInUsingCredentials(nameOrEmail, password) {
     return successAndError[0]
 }
 
-
-
-/* async function logIn(e) {
-    e.preventDefault(); // don't reload at submit form
-    const nameOrEmail = e.target.useremail.value;
-    const password = e.target.password.value;
-    const credentials = btoa(`${nameOrEmail}:${password}`); //encode string in base-64
-
-    const [success, result] = await getJWT(credentials);
-
-    if (success) {
-        localStorage.setItem("jwt", result);  // Store JWT for future requests
-        localStorage.setItem("username", nameOrEmail); // Store username for display
-        loginErrorMessage.textContent = '';
-        console.log("Login successful");
-        updateUI();
-        loadContent();
-    } else {
-        console.error("Login failed:", result);
-        loginErrorMessage.textContent = result;
-    }
-} */
-
-
 export async function fetchToken(credentials) {
     try {
         const response = await fetch("https://01.gritlab.ax/api/auth/signin", {
@@ -79,14 +55,37 @@ export async function checkToken(token) {
     }
 }
 
-export function GetUserDetails() {
+export async function FetchWithQuery(query) {
+    const jwt = localStorage.getItem("jwt")
+    if (!jwt) {
+        console.log("No jwt found, returning to login...")
+        // Should probably return to login screen here
+        return
+    }
 
-}
+    try {
+        const res = await fetch(`https://01.gritlab.ax/api/graphql-engine/v1/graphql`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${jwt}`,
+            },
+            body: JSON.stringify({ query }),
+        });
 
-export function GetUserProgress() {
+        if (!res.ok) {
+            if (res.status === 401) {
+                console.log("Session expired, logging out...")
+                // Log out and return to login screen here
+            } else {
+                console.log("Failed to get data from API.")
+            }
+            return
+        }
 
-}
-
-export function GetUserSkills() {
-
+        const data = await res.json()
+        return data.data
+    } catch (error) {
+        console.error("Error when fetching with query:", error)
+    }
 }
