@@ -1,15 +1,17 @@
 //Auth link https://01.gritlab.ax/api/auth/signin
 
-export function SignInUsingCredentials(nameOrEmail, password) {
+export async function SignInUsingCredentials(nameOrEmail, password) {
     const credentials = btoa(`${nameOrEmail}:${password}`); //encode string in base-64
 
     let successAndError = []
-    successAndError = fetchToken(credentials)
+    successAndError = await fetchToken(credentials)
+    console.log("Just tried to fetch token, got:")
+    console.log(successAndError[0], "and", successAndError[1])
     if (successAndError[0]) {
         const jwtToken = successAndError[1]
         localStorage.setItem("jwt", jwtToken)  // Store JWT for future requests
     }
-    return successAndError[1]
+    return successAndError[0]
 }
 
 
@@ -52,6 +54,7 @@ export async function fetchToken(credentials) {
             return [false, data.error];
         }
     } catch (error) {
+        console.log("Login failed part 2")
         return [false, "Login not allowed from this location"];
     }
 }

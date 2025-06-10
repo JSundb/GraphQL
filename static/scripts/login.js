@@ -11,21 +11,37 @@ export function StartLoginPage() {
 
     const loginButton = document.getElementById("login-button")
 
-    loginButton.addEventListener("click", () => {
-        console.log("Logging in...")
-        let values
-        values = getAndResetInput(usernameEmailField, passwordField)
-        console.log(values[0]) // Username/Email
-        console.log(values[1]) // Password
-        let success = SignInUsingCredentials(values[0], values[1])
-        if (success) {
-            loggedIn = true
-            console.log("Login successful")
-        } else {
-            loggedIn = false
-            console.log("Login failed")
+    loginButton.addEventListener("click", async () => {
+        await sendCredentials(usernameEmailField, passwordField)
+    })
+
+    usernameEmailField.addEventListener("keydown", async (event) => {
+        if (event.key === "Enter") {
+            await sendCredentials(usernameEmailField, passwordField)
         }
     })
+
+    passwordField.addEventListener("keydown", async (event) => {
+        if (event.key === "Enter") {
+            await sendCredentials(usernameEmailField, passwordField)
+        }
+    })
+}
+
+async function sendCredentials(usernameEmailField, passwordField) {
+    console.log("Logging in...")
+    let values
+    values = getAndResetInput(usernameEmailField, passwordField)
+    console.log(values[0]) // Username/Email
+    console.log(values[1]) // Password
+    let success = await SignInUsingCredentials(values[0], values[1])
+    if (success) {
+        loggedIn = true
+        console.log("Login successful")
+    } else {
+        loggedIn = false
+        console.log("Login failed")
+    }
 }
 
 function getAndResetInput(usernameEmailField, passwordField) {
