@@ -21,7 +21,10 @@ export const ProfileQuery = `{
     auditRatio
     details: attrs
   }
-  transaction_aggregate(where: {type: {_eq: "xp"}, event: {id: {_eq: 104}}}) {
+}`
+
+export const XPQuery = `{
+data: transaction_aggregate(where: {type: {_eq: "xp"}, event: {id: {_eq: 104}}}) {
     aggregate {
       count
       sum {
@@ -29,4 +32,11 @@ export const ProfileQuery = `{
       }
     }
   }
+}`
+
+export const ProgressQuery = `{
+}`
+
+export const SkillsQuery = `{
+
 }`
