@@ -14,11 +14,12 @@ export const PROFILEPAGE = `    <div id="profile-page-content">
 export const ProfileQuery = `{
   user {
     id
-    login: username
+    username: login
     email
     firstName
     lastName
     auditRatio
+    details: attrs
   }
   transaction_aggregate(where: {type: {_eq: "xp"}, event: {id: {_eq: 104}}}) {
     aggregate {
