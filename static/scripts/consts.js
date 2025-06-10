@@ -35,6 +35,21 @@ data: transaction_aggregate(where: {type: {_eq: "xp"}, event: {id: {_eq: 104}}})
 }`
 
 export const ProgressQuery = `{
+  user {
+    projects: progresses(where: {object: {type: {_eq: "project"}}}) {
+      object {
+        projectName: name
+      }
+      grade
+      createdAt
+      updatedAt
+      group {
+        members {
+          teamMate: userLogin
+        }
+      }
+    }
+  }
 }`
 
 export const SkillsQuery = `{
