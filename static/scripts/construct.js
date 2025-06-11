@@ -57,11 +57,25 @@ export async function ConstructUserProgress() {
     .filter(obj => obj.path.project[0]?.updatedAt)
     .sort((a, b) => new Date(b.path.project[0].updatedAt) - new Date(a.path.project[0].updatedAt))
 
+    let graphData
+
     sortedData.forEach(obj => {
         if (obj.path.project[0].isDone === false) return;
         accumulatedXP -= obj.amount
-        console.log(obj)
-        pageArea.innerHTML += `
+        let teamMates = []
+        obj.path.project[0].group.members.forEach(member => {
+            teamMates.push(member.teamMate)
+        });
+        let dataPoint = {
+            date: new Date(obj.path.project[0].updatedAt), 
+            xpAcc: `${Math.round(accumulatedXP/1000)}kB`, 
+            xpGain: `${Math.round(accumulatedXP/1000)}kB`, 
+            projName: obj.path.project[0].object.projectName, 
+            grade: obj.path.project[0].grade.toFixed(2), 
+            mates: teamMates
+        }
+        graphData.push(dataPoint)
+/*         pageArea.innerHTML += `
     <br><br>
     <div id="project-name">Name: ${obj.path.project[0].object.projectName}</div>
     <div id="xp-gained">XP Gained: ${Math.round(obj.amount/1000)}kB</div>
@@ -75,12 +89,43 @@ export async function ConstructUserProgress() {
     <div id="member">Teammate ${index}: ${member.teamMate}</div>
             `
         });
+ */
     });
+    makeProgressGraph()
 }
 
-function makeProgressGraph() {
-
-}
+function makeProgressGraph(containerId, dataPoints) {
+    // dataPoints: [{ date: Date, total: Number }, …]
+    const svgWidth = 600;
+    const svgHeight = 300;
+    const margin = { top: 10, right: 10, bottom: 30, left: 50 };
+    const w = svgWidth - margin.left - margin.right;
+    const h = svgHeight - margin.top - margin.bottom;
+  
+    // Build scales
+    const times = dataPoints.map(p => p.date.getTime());
+    const values = dataPoints.map(p => p.total);
+    const minX = Math.min(...times), maxX = Math.max(...times);
+    const minY = 0, maxY = Math.max(...values);
+  
+    // Map to SVG coords
+    const coords = dataPoints.map(p => {
+      const x = margin.left + ((p.date.getTime() - minX) / (maxX - minX)) * w;
+      const y = margin.top + h - ((p.total - minY) / (maxY - minY)) * h;
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    });
+  
+    // Render SVG
+    const container = document.getElementById(containerId);
+    container.innerHTML = `
+      <svg width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${svgWidth} ${svgHeight}">
+        <!-- axes -->
+        <line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${margin.top + h}" stroke="#333" />
+        <line x1="${margin.left}" y1="${margin.top + h}" x2="${margin.left + w}" y2="${margin.top + h}" stroke="#333" />
+        <!-- line -->
+        <polyline fill="none" stroke="#0074d9" stroke-width="2" points="${coords.join(" ")}" />
+      </svg>`;
+  }
 
 export async function ConstructUserSkills() {
     const pageArea = document.getElementById("graph-skills")
@@ -105,6 +150,34 @@ export async function ConstructUserSkills() {
     });
 }
 
-function makeSkillsGraph() {
-
-}
+function makeSkillsGraph(containerId, skills) {
+    // skills: [{ name: String, pct: Number }, …]
+    const svgWidth = 600;
+    const barHeight = 20;
+    const gap = 10;
+    const margin = { left: 100, top: 10 };
+  
+    // find max for scaling (should be 100)
+    const maxPct = 100;
+  
+    const height = margin.top + skills.length * (barHeight + gap);
+  
+    // build rects
+    const rects = skills.map((s, i) => {
+      const y = margin.top + i * (barHeight + gap);
+      const barW = (s.pct / maxPct) * (svgWidth - margin.left - 20);
+      return `
+        <!-- ${s.name}: ${s.pct}% -->
+        <text x="0" y="${y + barHeight * .75}" font-size="12">${s.name}</text>
+        <rect x="${margin.left}" y="${y}" width="${barW}" height="${barHeight}" fill="#28a745" />
+        <text x="${margin.left + barW + 5}" y="${y + barHeight * .75}" font-size="12">${s.pct}%</text>
+      `;
+    }).join("");
+  
+    // render SVG
+    const container = document.getElementById(containerId);
+    container.innerHTML = `
+      <svg width="${svgWidth}" height="${height}">
+        ${rects}
+      </svg>`;
+  }
