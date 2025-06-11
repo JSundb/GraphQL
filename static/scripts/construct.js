@@ -1,5 +1,15 @@
 import { FetchWithQuery } from "./fetch.js"
 import { ProfileQuery, ProgressQuery, SkillsQuery, XPQuery } from "./consts.js"
+import { LoginState } from "./login.js"
+
+export async function ConstructLogoutButton() {
+    const logoutButton = document.getElementById("logout-button")
+    logoutButton.addEventListener("click", () => {
+        localStorage.clear()
+        LoginState("set", false)
+        location.reload()
+    })
+}
 
 export async function ConstructUserDetails() {
     const pageArea = document.getElementById("user-details")

@@ -1,5 +1,6 @@
 1. Fix age such that if birthday has not yet occured, -1 to age
 2. Alternatives to "Grade"? If no alternatives, at least truncate
-3. Add phone number?
-4. Should xp (in kb) be rounded, truncated, or ceiled?
-5. Ensure logout exists, works, and removes jwt along with all prev user data
+3. Should xp (in kb) be rounded, truncated, or ceiled?
+4. Ensure logout exists, works, and removes jwt along with all prev user data
+
+results

@@ -6,6 +6,7 @@ export const LOGINPAGE = `    <div id="login-page-content">
     </div>`
 
 export const PROFILEPAGE = `    <div id="profile-page-content">
+        <button id="logout-button">Log out</button>
         <div id="user-details">Details:</div>
         <div id="graph-progress">Progress:</div>
         <div id="graph-skills">Skills:</div>
