@@ -37,18 +37,25 @@ data: transaction_aggregate(where: {type: {_eq: "xp"}, event: {id: {_eq: 104}}})
 
 export const ProgressQuery = `{
   user {
-    projects: progresses(
-      order_by: { updatedAt: desc }
-    	where: {object: {type: {_eq: "project"}}}) {
-      object {
-        projectName: name
-      }
-      grade
-      createdAt
-      updatedAt
-      group {
-        members {
-          teamMate: userLogin
+    xps(
+      where: {pathByPath: {progresses: {object: {type: {_in: ["project", "piscine"]}}}}}
+    ) {
+      amount
+      path: pathByPath {
+        project: progresses(order_by: {updatedAt: desc}) {
+          object {
+            type
+            projectName: name
+          }
+          isDone
+          grade
+          createdAt
+          updatedAt
+          group {
+            members {
+              teamMate: userLogin
+            }
+          }
         }
       }
     }
