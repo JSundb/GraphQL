@@ -2,3 +2,4 @@
 2. Alternatives to "Grade"? If no alternatives, at least truncate
 3. Should xp (in kb) be rounded, truncated, or ceiled?
 4. XP should be gathered for the JS piscine too
+5. Make hoverable circles nicer

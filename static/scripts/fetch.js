@@ -3,6 +3,8 @@
 export async function SignInUsingCredentials(nameOrEmail, password) {
     const credentials = btoa(`${nameOrEmail}:${password}`); //encode string in base-64
 
+    return [true] // REMOVE THIS
+
     let successAndError = []
     successAndError = await fetchToken(credentials)
     console.log("Just tried to fetch token, got:")
