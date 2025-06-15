@@ -116,11 +116,11 @@ function makeProgressGraph(container, dataPoints) {
 
     const times = dataPoints.map(p => p.date.getTime());
     const values = dataPoints.map(p => p.xpAcc);
-    const minX = Math.min(...times), maxX = Math.max(...times);
-    const minY = 0, maxY = Math.max(...values);
+    const minX = Math.min(...times), maxX = Math.max(...times); // x axis = time
+    const minY = 0, maxY = Math.max(...values); // y axis = xp
 
     const coords = dataPoints.map(p => {
-        const x = margin.left + ((p.date.getTime() - minX) / (maxX - minX)) * w;
+        const x = margin.left + ((p.date.getTime() - minX) / (maxX - minX)) * w; // 0-1 float multiplied by width, similar below...
         const y = margin.top + h - ((p.xpAcc - minY) / (maxY - minY)) * h;
         return `${x.toFixed(1)},${y.toFixed(1)}`;
     });
@@ -135,8 +135,10 @@ function makeProgressGraph(container, dataPoints) {
             `Gained XP: ${data.xpGain}kB\n` +
             `Grade: ${data.grade}\n` +
             `Team: ${data.team}\n`
+        const circleX = point.split(',')[0];
+        const circleY = point.split(',')[1];
         return `<circle
-      cx="${point.split(',')[0]}" cy="${point.split(',')[1]}"
+      cx="${circleX}" cy="${circleY}"
       r="4" fill="#0074d9" style="cursor: pointer;">
       <title>${tooltip}</title>
     </circle>`
@@ -159,6 +161,7 @@ export async function ConstructUserSkills() {
     const pageArea = document.getElementById("graph-skills")
     const skillsData = SkillsData // REMOVE THIS
     /* const skillsData = await FetchWithQuery(SkillsQuery) */
+    const maxRadius = 100
 
     skillsData.user[0].skills.forEach(skill => {
         let skillName = skill.type
@@ -170,42 +173,31 @@ export async function ConstructUserSkills() {
     <div id="level">Your Current Level: ${skill.amount}</div>
     `
         } else {
-            pageArea.innerHTML += `
-    <br><br>
-    <div id="skill-name">${skillName}: </div>
-    <div id="skill-value">${skill.amount}%</div>
-    `
+            pageArea.innerHTML += makeSkillCircle(skill, maxRadius, skillName)
         }
     });
 }
 
-function makeSkillsGraph(container, skills) {
-    // skills: [{ name: String, pct: Number }, …]
-    const svgWidth = 600;
-    const barHeight = 20;
-    const gap = 10;
-    const margin = { left: 100, top: 10 };
+function makeSkillCircle(skill, maxRadius, skillName) {
+    const radius = (skill.amount/100) * maxRadius
+    return `
+    <div class="skill-widget">
+      <div class="skill-label">${skillName} (${skill.amount}%)</div>
+      <br><br>
+      <svg width="${2*maxRadius}" height="${2*maxRadius}" viewBox="0 0 ${2*maxRadius} ${2*maxRadius}">
+        <!-- max circle (gray) -->
+        <circle
+          cx="${maxRadius}" cy="${maxRadius}"
+          r="${maxRadius}"
+          fill="lightgray" />
 
-    // find max for scaling (should be 100)
-    const maxPct = 100;
-
-    const height = margin.top + skills.length * (barHeight + gap);
-
-    // build rects
-    const rects = skills.map((s, i) => {
-        const y = margin.top + i * (barHeight + gap);
-        const barW = (s.pct / maxPct) * (svgWidth - margin.left - 20);
-        return `
-        <!-- ${s.name}: ${s.pct}% -->
-        <text x="0" y="${y + barHeight * .75}" font-size="12">${s.name}</text>
-        <rect x="${margin.left}" y="${y}" width="${barW}" height="${barHeight}" fill="#28a745" />
-        <text x="${margin.left + barW + 5}" y="${y + barHeight * .75}" font-size="12">${s.pct}%</text>
-      `;
-    }).join("");
-
-    // render SVG
-    container.innerHTML = `
-      <svg width="${svgWidth}" height="${height}">
-        ${rects}
-      </svg>`;
+        <!-- skill circle (blue) -->
+        <circle
+          cx="${maxRadius}" cy="${maxRadius}"
+          r="${radius}"
+          fill="#0074d9" />
+      </svg>
+    </div>
+    <br><br><br>
+  `;
 }
