@@ -1,0 +1,147 @@
+/* Base reset & typography */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* only center horizontally */
+  /* remove justify-content so things start at the top */
+  padding: 2rem;
+  background-color: #f5f7fa;
+}
+
+/* Content area wrapper */
+#content-area {
+  width: 100%;
+  max-width: 1200px;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Common form elements */
+input,
+button,
+textarea {
+  width: 100%;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  margin-top: 0.5rem;
+  border: 1px solid #ccd0d5;
+  border-radius: 0.375rem;
+  transition: border-color 0.2s;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #0074d9;
+}
+
+button {
+  background-color: #0074d9;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+button:hover {
+  background-color: #005fa3;
+}
+
+/* Error message */
+#error-message {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  background-color: #ffe6e6;
+  color: #a00;
+  border: 1px solid #f5c2c2;
+  border-radius: 0.375rem;
+}
+
+/* Login page layout */
+#login-page-content {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+#login-page-content>span {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Profile page */
+#profile-page-content {
+  display: flex;
+  flex-direction: column;
+}
+
+#logout-button {
+  align-self: flex-end;
+  width: auto;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  text-align: center;
+}
+
+/* User details section */
+#user-details>div {
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* Graph containers */
+#graph-progress {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#graph-skills {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+/* Skill widgets */
+.skill-widget {
+  display: inline-block;
+  margin: 1rem;
+  text-align: center;
+}
+
+.skill-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+/* SVG responsiveness */
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Utility */
+textarea {
+  resize: none;
+}

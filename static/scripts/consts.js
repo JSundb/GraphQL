@@ -1,4 +1,5 @@
 export const LOGINPAGE = `    <div id="login-page-content">
+        <div id="error-message" hidden></div>
         <span>Sign in:</span>
         <input id="name-email-input" placeholder="Username/Email">
         <input type="password" id="password-input" placeholder="Password">
@@ -6,10 +7,17 @@ export const LOGINPAGE = `    <div id="login-page-content">
     </div>`
 
 export const PROFILEPAGE = `    <div id="profile-page-content">
+        <div id="error-message" hidden></div>
         <button id="logout-button">Log out</button>
-        <div id="user-details">Details:</div>
-        <div id="graph-progress">Progress:</div>
-        <div id="graph-skills">Skills:</div>
+        <div id="user-details">
+        <h2>Details:</h2><br><br>
+        </div>
+        <div id="graph-progress">
+        <h2>Progress:</h2><br><br>
+        </div>
+        <div id="graph-skills">
+        <h2>Skills:</h2><br><br>
+        </div>
     </div>`
 
 export const ProfileQuery = `{
@@ -65,13 +73,9 @@ export const ProgressQuery = `{
 export const SkillsQuery = `{
   user {
     skills: transactions(
-      order_by: [{type: asc}, {amount: desc}]
+      where: { type: { _like: "skill%" } }
       distinct_on: [type]
-      where: {
-      _or: [
-      {type: {_like: "skill%"}}
-      {type: {_eq: "level"}}
-      ]}
+      order_by: [{ type: asc }, { amount: desc }]
     ) {
       type
       amount

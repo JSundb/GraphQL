@@ -1,5 +1,6 @@
 import { SignInUsingCredentials } from "./fetch.js"
 import { StartProfilePage } from "./profile.js"
+import { SetErrorAndReload } from "./error.js"
 
 let loggedIn = false
 
@@ -29,16 +30,15 @@ async function sendCredentials(usernameEmailField, passwordField) {
     console.log("Logging in...")
     let values
     values = getAndResetInput(usernameEmailField, passwordField)
-    console.log(values[0]) // Username/Email
-    console.log(values[1]) // Password
-    let success = await SignInUsingCredentials(values[0], values[1])
-    if (success) {
+    let successAndError = await SignInUsingCredentials(values[0], values[1])
+    if (successAndError[0]) {
         loggedIn = true
         console.log("Login successful")
         StartProfilePage()
     } else {
         loggedIn = false
         console.log("Login failed")
+        SetErrorAndReload(`${successAndError[1]}`)
     }
 }
 
@@ -49,8 +49,6 @@ function getAndResetInput(usernameEmailField, passwordField) {
     usernameEmailField.value = ""
     passwordField.value = ""
 
-    console.log(`Got username/email: ${usernameOrEmail} and password: ${password}`)
-
     return [usernameOrEmail, password]
 }
 
@@ -59,5 +57,6 @@ export function LoginState(getOrSet, newState) {
         return loggedIn
     } else if (getOrSet === "set") {
         loggedIn = newState
+        window.location.reload()
     }
 }
