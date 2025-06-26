@@ -90,7 +90,7 @@ export async function ConstructUserProgress() {
 }
 
 function makeProgressGraph(container, dataPoints, totalXP) {
-    const margin = { top: 10, right: 10, bottom: 60, left: 60 };
+    const margin = { top: 20, right: 20, bottom: 80, left: 80 };
     const svgWidth = 1200, svgHeight = 800;
     const w = svgWidth - margin.left - margin.right;
     const h = svgHeight - margin.top - margin.bottom;
