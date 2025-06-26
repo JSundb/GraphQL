@@ -14,6 +14,7 @@ export const PROFILEPAGE = `    <div id="profile-page-content">
         </div>
         <div id="graph-progress">
         <h2>Progress:</h2><br><br>
+        <span>(Only XP from projects and picines included)</span>
         </div>
         <div id="graph-skills">
         <h2>Skills:</h2><br><br>
